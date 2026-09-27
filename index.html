@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10132b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="SKYRIFT ARENA 3D — スマホで遊べるオリジナルの3D吹っ飛ばし対戦ゲーム。インストール不要、タッチ操作、1人対CPU。">
+<title>SKYRIFT ARENA 3D — 空を、勝ち取れ。</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css">
+</head>
+<body data-screen="loading">
+<canvas id="world" aria-label="3D対戦アリーナ"></canvas>
+<div class="vignette" aria-hidden="true"></div><div id="stars" aria-hidden="true"></div>
+<div id="loading" class="loading"><div class="brand-icon large">S<span>/</span>R</div><h1>SKYRIFT <span>ARENA 3D</span></h1><p id="loadingText">3Dアリーナを準備しています…</p><div class="loading-line"></div></div>
+<header id="header"><div class="wordmark"><div class="brand-icon">S<span>/</span>R</div><div>SKYRIFT <b>ARENA 3D</b></div></div><div class="header-right"><span class="status-pill"><i></i> SOLO / 3D</span><button class="icon-button sound-toggle" aria-label="効果音を切り替える" title="効果音">♪</button><button id="settingsButton" class="icon-button" aria-label="設定" title="設定">⚙</button></div></header>
+<main id="menu" hidden>
+ <section class="menu-copy"><p class="eyebrow"><span></span> A NEW DIMENSION OF BATTLE</p><h1>SKYRIFT<br><span>ARENA</span><em>3D</em></h1><h2>空を、勝ち取れ。</h2><p class="tagline">360°のアリーナで、限界のその先へ。</p><div class="rule-pills"><span>3 STOCK</span><span>2 MIN</span><span>VS CPU</span></div></section>
+ <div class="arena-caption"><span class="crosshair">✦</span><div><b id="stageCaption">ORBITAL GARDEN</b><span>LIVE 3D ARENA / 01</span></div></div>
+ <section class="menu-setup"><div class="section-label"><b>CHOOSE YOUR FIGHTER</b><span>あなたのファイター</span></div>
+  <div class="fighter-choices" id="fighterChoices">
+   <button class="fighter-card selected" data-char="0" aria-pressed="true"><span class="card-no">01</span><span class="mini-bot nova"><i></i></span><b>NOVA</b><small>スピード</small></button>
+   <button class="fighter-card" data-char="1" aria-pressed="false"><span class="card-no">02</span><span class="mini-bot ember"><i></i></span><b>EMBER</b><small>パワー</small></button>
+   <button class="fighter-card" data-char="2" aria-pressed="false"><span class="card-no">03</span><span class="mini-bot moss"><i></i></span><b>MOSS</b><small>ディフェンス</small></button>
+  </div>
+  <div class="fighter-description"><span id="charDescription">二段ジャンプと星弾で、空を駆ける。</span><span id="charAbility">STAR SHOT ↗</span></div>
+  <div class="match-options"><label>STAGE<select id="stageSelect" aria-label="ステージ"><option value="0">星環のアリーナ</option><option value="1">夕映えのアリーナ</option></select></label><label>CPU<select id="difficultySelect" aria-label="CPUの強さ"><option value="0">やさしい</option><option value="1" selected>ふつう</option><option value="2">つよい</option></select></label></div>
+  <div class="start-row"><button id="startButton" class="primary"><span>対戦スタート<small>READY TO RIFT</small></span><b>↗</b></button><button id="trainingButton" class="secondary">練習<small>TRAINING</small></button></div>
+  <div class="setup-footer"><button id="helpButton">遊び方 <span>↗</span></button><span id="record">0 WINS · 0 MATCHES</span></div>
+ </section>
+ <footer class="menu-footer"><span>ORIGINAL PLATFORM FIGHTER</span><span>WEBGL · NO INSTALL</span></footer>
+</main>
+<section id="hud" hidden aria-label="対戦状況">
+ <div class="fighter-hud player"><div class="hud-top"><span class="player-badge">1P</span><b id="pName">NOVA</b><span id="pStocks" class="stocks">◆◆◆</span></div><div class="hud-bottom"><div class="damage"><strong id="pDamage">0</strong><span>%</span></div><div class="meter-group"><span>SHIELD</span><div class="meter"><i id="pShield"></i></div><span class="skill-status" id="pSkill">必殺 READY</span></div></div></div>
+ <div class="match-center"><strong id="timer">2:00</strong><span id="matchMode">3 STOCK BATTLE</span><div class="hud-tools"><button class="icon-button sound-toggle" aria-label="効果音を切り替える">♪</button><button id="cameraButton" class="icon-button" aria-label="視点を切り替える" title="視点">◈</button><button id="pauseButton" class="icon-button" aria-label="一時停止" title="一時停止">Ⅱ</button></div></div>
+ <div class="fighter-hud cpu"><div class="hud-top"><span class="player-badge">CPU</span><b id="cName">EMBER</b><span id="cStocks" class="stocks">◆◆◆</span></div><div class="hud-bottom"><div class="damage"><strong id="cDamage">0</strong><span>%</span></div><div class="meter-group"><span>SHIELD</span><div class="meter"><i id="cShield"></i></div><span class="skill-status" id="cSkill">CPU / NORMAL</span></div></div></div>
+</section>
+<div id="labels" hidden aria-hidden="true"><div id="playerLabel" class="fighter-label">1P <span>▼</span></div><div id="cpuLabel" class="fighter-label opponent">CPU <span>▼</span></div></div>
+<div id="banner" hidden aria-live="polite"><strong id="bannerText">3</strong><span id="bannerSub">READY TO RIFT</span></div>
+<div id="battleTip" hidden><b>ダメージをためて、場外へ！</b><span>落ちそうになったら「必殺」で復帰</span></div>
+<section id="controls" hidden aria-label="タッチ操作">
+ <div class="joystick-area"><div id="joystick" aria-label="360度移動スティック"><span class="joy-axis-x"></span><span class="joy-axis-y"></span><div id="knob"></div><span class="joy-up">↑</span><span class="joy-down">↓</span><span class="joy-left">‹</span><span class="joy-right">›</span></div><span class="joy-label">360° MOVE</span></div>
+ <div class="action-pad"><button id="guardButton" data-action="guard" class="action guard"><b>守る</b><small>長押し</small></button><button id="specialButton" data-action="special" class="action special"><b>必殺</b><small id="specialHint">空中で復帰</small></button><button id="attackButton" data-action="attack" class="action attack"><b>攻撃</b><small>長押しで溜め</small><span id="chargeFill"></span></button><button id="jumpButton" data-action="jump" class="action jump"><b>跳ぶ</b><small>二段ジャンプ</small></button></div>
+</section>
+<div id="pauseOverlay" class="overlay" hidden><section class="dialog"><p class="eyebrow">TAKE A BREATHER</p><h2>一時停止</h2><p>準備ができたら、もう一度アリーナへ。</p><button id="resumeButton" class="primary">対戦に戻る <span>→</span></button><button id="restartButton" class="secondary wide">最初からやり直す</button><button id="menuButton" class="text-button">ファイター選択に戻る</button><p class="keyboard-hint">PC: WASD / 矢印で移動 · SPACEでジャンプ<br>Jで攻撃 · Kで必殺 · Lでシールド</p></section></div>
+<div id="resultOverlay" class="overlay" hidden><section class="dialog result-dialog"><p class="eyebrow" id="resultKicker">RIFT CHAMPION</p><h2 id="resultTitle">YOU WIN</h2><p id="resultMessage">空を、勝ち取った。</p><div class="result-stats"><div><b id="resultKos">3</b><span>K.O.</span></div><div><b id="resultDamage">0</b><span>DAMAGE</span></div><div><b id="resultTime">0:00</b><span>TIME</span></div></div><button id="rematchButton" class="primary">もう一度対戦 <span>↗</span></button><button id="resultMenuButton" class="secondary wide">ファイター選択へ</button></section></div>
+<div id="helpOverlay" class="overlay" hidden><section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><p class="eyebrow">HOW TO PLAY</p><h2 id="helpTitle">3Dの空を、制覇しよう。</h2><p class="help-intro">攻撃で相手のダメージ % をため、アリーナの外へ吹っ飛ばそう。<br>相手の3ストックを先に奪えば勝ち！</p><div class="help-grid"><div><b>✥ 360°移動</b><p>左スティックで前後左右へ。移動方向は画面の向きに対応。</p></div><div><b>↟ 二段ジャンプ</b><p>「跳ぶ」を2回で空中ジャンプ。高い足場にも乗れます。</p></div><div><b>✦ 攻撃・溜め攻撃</b><p>「攻撃」を押して離す。長押しで強力に！ 近くの敵へ自動照準。</p></div><div><b>ϟ 必殺・空中復帰</b><p>地上では固有技。空中では上昇し、スティック方向へ復帰。着地まで1回。</p></div><div><b>◇ シールド</b><p>地上で「守る」を長押し。ゲージが尽きると隙が生まれます。</p></div><div><b>◷ 3ストック・2分</b><p>時間切れは残りストック、次にダメージの少なさで判定。練習は時間無制限。</p></div></div><p class="help-foot">歩き落ちを抑えるエッジアシスト付き。ジャンプ中・吹っ飛び中は無効です。<br>横向き推奨。1人対CPU専用で、オンライン対人対戦はありません。<br>任天堂・大乱闘スマッシュブラザーズとは無関係のオリジナル作品です。</p><button id="helpClose" class="primary">わかった！ <span>✓</span></button></section></div>
+<div id="settingsOverlay" class="overlay" hidden><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><p class="eyebrow">MAKE IT YOURS</p><h2 id="settingsTitle">設定</h2><label class="setting-row">描画品質<select id="qualitySelect"><option value="auto">自動</option><option value="low">軽量</option><option value="high">高画質</option></select></label><p class="setting-note">動きが重い場合は「軽量」に切り替えてください。</p><button id="fullscreenButton" class="secondary wide">全画面にする</button><p class="setting-note">対応ブラウザーのみ。スマホは横向きがおすすめです。</p><button id="settingsClose" class="primary">戻る <span>→</span></button></section></div>
+<div id="errorOverlay" class="overlay" hidden><section class="dialog"><h2>3D画面を開始できません</h2><p id="errorText">Safari または Chrome でこのページを開き直してください。</p><button id="reloadButton" class="primary">再読み込み</button></section></div>
+<div id="toast" hidden role="status"></div><noscript>このゲームにはJavaScriptとWebGLが必要です。</noscript>
+<script src="engine.js"></script><script src="game.js"></script>
+</body></html>
